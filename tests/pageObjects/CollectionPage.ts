@@ -89,17 +89,17 @@ export class CollectionPage {
 
     console.log("All Violations:", results.violations);
 
-    // Filter out 'low' impact violations and log the impact for each violation
+    
     const filteredViolations = results.violations.filter((violation, index) => {
-      const impact = violation.impact ? violation.impact.toLowerCase() : 'unknown'; // Normalize to lowercase to handle case variations
+      const impact = violation.impact ? violation.impact.toLowerCase() : 'unknown'; 
       console.log(`Violation ${index + 1}:`, violation);
-      console.log(`Impact of Violation ${index + 1}:`, impact);  // Log the impact for each violation
+      console.log(`Impact of Violation ${index + 1}:`, impact);  
 
-      // Ensure the violation has a valid impact and it's not 'low' or 'unknown'
-      return impact !== 'low' && impact !== 'unknown' && impact !== '';  // Exclude low, unknown, and empty impacts
+      
+      return impact !== 'low' && impact !== 'unknown' && impact !== '';  
     });
 
-    // Log filtered violations for deeper inspection
+
     console.log("Filtered Violations (non-low impact):", filteredViolations);
 
     return { violations: filteredViolations };

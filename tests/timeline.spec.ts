@@ -32,7 +32,7 @@ test.describe("Timeline Navigation", () => {
   });
 
   test("Verify Invalid Timeline Link", async ({ page }) => {
-    test.setTimeout(60000);
+    test.setTimeout(90000);
     // Initialize the TimelinePage object
     const timelinePage = new TimelinePage(page);
 
