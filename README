@@ -1,0 +1,141 @@
+
+# Playwright Automation Framework
+
+This repository contains a Playwright automation framework for testing web applications. The framework is implemented using TypeScript and follows the **Page Object Model (POM)** pattern to maintain clean and scalable code.
+
+## Project Structure
+
+- **`CollectionPage.ts`**: Page Object Model (POM) for managing interactions on the collection page, including accessibility checks and browsing functionality.
+- **`SearchPage.ts`**: Page Object Model (POM) for managing search functionality and interacting with search results.
+- **`TimelinePage.ts`**: Page Object Model (POM) for managing interactions with the timeline page.
+- **`performanceUtils.ts`**: Utility functions for performance-related tests.
+- **`collection.spec.ts`**: Playwright test file for verifying accessibility and functional tests related to the collection page.
+- **`search.spec.ts`**: Playwright test file for testing search functionality and performance.
+- **`timeline.spec.ts`**: Playwright test file for testing interactions with the timeline page.
+
+## Installation
+
+Follow these steps to set up the environment and run the tests.
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- **Node.js** (v14 or later)
+- **npm** (Node Package Manager)
+
+### Steps to Install
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your-repository-url.git
+```
+
+2. Navigate into the project directory:
+
+```bash
+cd your-project-directory
+```
+
+3. Install dependencies:
+
+```bash
+npm install
+```
+
+## Running the Tests
+
+This framework uses **Playwright** for browser automation. To run the tests, follow these steps:
+
+1. Install Playwright (if not already installed):
+
+```bash
+npm install playwright
+```
+
+2. To run the tests, use the following command:
+
+```bash
+npx playwright test
+
+3. Run the tests using Playwright Test for VSCode extension
+To install the extension navigate to extensions, search for Playwright Test for VSCode by Microsoft
+Click install
+```
+
+This will run all the tests defined in the `*.spec.ts` files.
+
+### Running Specific Tests
+
+If you want to run a specific test file, you can specify the file like this:
+
+```bash
+npx playwright test tests/collection.spec.ts
+```
+
+### Running Tests in Parallel
+
+Playwright supports running tests in parallel. You can configure parallelism in the Playwright configuration file (`playwright.config.ts`).
+
+```bash
+npx playwright test --workers=4
+```
+
+## Code Structure
+
+### Page Object Model (POM)
+
+The framework follows the **Page Object Model (POM)** pattern to structure the code. Each page or section of the application is represented as a separate class, where all the interactions with that page are abstracted into methods.
+
+- **Example**: `SearchPage.ts`
+
+```typescript
+import { Page } from 'playwright';
+
+export class SearchPage {
+  private page: Page;
+
+  constructor(page: Page) {
+    this.page = page;
+  }
+
+  // Method to search for a term
+  async search(term: string) {
+    await this.page.fill('input[name="q"]', term); // Adjust the selector as necessary
+    await this.page.click('button[type="submit"]');
+  }
+
+  // Method to get the first search result
+  async getFirstSearchResultText(): Promise<string> {
+    return await this.page.locator('.search-result-item').textContent();
+  }
+}
+```
+
+### Test Structure
+
+Each test file is a Playwright test suite. For example, `collection.spec.ts` contains the tests for the **Collection Page**.
+
+- **Example**: `collection.spec.ts`
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { CollectionPage } from './pageObjects/CollectionPage';
+
+test('Ensure Letter Buttons are Accessible', async ({ page }) => {
+  const collectionPage = new CollectionPage(page);
+  await collectionPage.checkAccessibility();
+  expect(await collectionPage.getFilteredViolations()).toHaveLength(0);
+});
+
+Assumptions and Notes
+Diverse Test Types: The tests in this framework are designed to showcase various testing techniques, focusing less on repeating similar UI-based tests (e.g., clicking on different links on the same page). The goal is to demonstrate the ability to create different types of tests:
+
+Performance Tests: Includes tests to measure page load time and ensure that the application meets performance benchmarks.
+Accessibility Tests: Using tools like axe-core to check that the application meets accessibility standards (e.g., WCAG 2.0).
+Functional Tests: Verifies that the core functionality of the application (such as form submission or collection browsing) works as expected.
+Usability Tests: Ensuring the system is user-friendly.
+Focus on Edge Cases and Diverse Inputs: The tests focus on diverse data sets and user interactions (e.g., checking for accessibility on various sections of the page), rather than just repeating the same tests with slight changes.
+
+Scalability: The framework is built to be scalable, allowing you to easily add new test cases or extend the existing ones as your application grows.
